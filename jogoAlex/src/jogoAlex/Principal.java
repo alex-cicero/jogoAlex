@@ -24,7 +24,7 @@ public class Principal {
 				Utils.adeus();
 			}
 			else {
-				Utils.adeus();
+				System.out.println("Saindo...");
 			}
 		}
 		catch(ErroEscolhaOpcao f){
@@ -39,13 +39,18 @@ public class Principal {
 		System.out.println("Voce deseja jogar novamente?");
 		System.out.println("[Entre com N para terminar o jogo]");
 		System.out.println("[Entre com qualquer outra letra para continuar]");
+		String r = new String();
 		Scanner sc1 = new Scanner(System.in);
-		String r = sc1.nextLine();
-		r = Utils.processaPalavra(r, 1);
-		sc1.nextLine();		
+		if(sc1.hasNext()) {
+			r = sc1.next();
+		}
+		r = Utils.processaPalavra(r, 1);		
 		sc1.close();
 		if(r.equals("N") != true) {
 			campanha();
+		}
+		else {
+			Utils.adeus();
 		}
 	}
 }

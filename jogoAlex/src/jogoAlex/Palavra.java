@@ -34,7 +34,7 @@ public class Palavra {
 	
 	@Override
 	public String toString() {
-		return "Palavra-chave: " + getPkey() + " # Palavra: " + getP();
+		return getP() + "#" + getPkey();
 	}
 
 }

@@ -15,8 +15,10 @@ public class Utils {
 		System.out.println("J - JOGAR");
 		System.out.println("B - BIBLIOTECA");
 		System.out.println("\n\n");
-		String c1 = sc4.nextLine();
-		sc4.nextLine();
+		String c1 = new String();
+		if(sc4.hasNext()) {
+			c1 = sc4.next();
+		}
 		c1 = processaPalavra(c1, 1);
 		if(c1.equals("J")) {
 			sc4.close();
@@ -26,10 +28,14 @@ public class Utils {
 			if(c1.equals("B")) {
 				Biblio.chamaInserePalavra(); 
 				System.out.println("Deseja jogar? [S / Qualquer outra letra]");
-				c1 = sc4.nextLine();
+				if(sc4.hasNext()) {
+					c1 = sc4.next();
+				}
 				c1 = processaPalavra(c1, 1);
-				sc4.nextLine();
 				sc4.close();
+				if(c1.equals("S")) {
+					return true;
+				}
 				return false;
 			}
 			else {
@@ -78,12 +84,7 @@ public class Utils {
         return pal;
 	}
 	
-	public static Palavra apresenta1() {
-	        Palavra pal = sorteador();
-        	return pal;
-	}
-	
-	public static void apresenta2(Palavra pal) {
+	public static void apresenta(Palavra pal) {
     	System.out.println("A palavra-chave eh: " + pal.getPkey());
         String p = pal.getP();
     	int tam = p.length();
@@ -91,7 +92,7 @@ public class Utils {
 	}
 	
 	public static void jogador() { //a funcao "principal", a que faz a conexao com a maioria delas
-		Palavra pal = apresenta1();
+		Palavra pal = sorteador();
 		String word = pal.getP();
 		char[] palavra = word.toCharArray();
 		int tam = palavra.length;
@@ -115,7 +116,7 @@ public class Utils {
         String jogador = String.valueOf(player);
         String palSort = String.valueOf(palavra);
      //
-     //
+     //magica do jogo
      //
    		boolean fim = false;
    		while(false == fim) {
@@ -142,7 +143,11 @@ public class Utils {
 		System.out.println();
 	}
 	
-	static Set<String> w = new HashSet<String>();
+	
+	
+	public static Set<String> w = new HashSet<String>();
+	
+	
 	
 	public static boolean confereLetra (String ch, String c) { //palavra, c
 		return c.equals(ch);
@@ -214,13 +219,15 @@ public class Utils {
 	
 	public static boolean jogada(String palSort, String jogador, Palavra pal) {
 		progresso(jogador);
-		apresenta2(pal);
+		apresenta(pal);
 		letras(w);
 		System.out.println("\nEntre com uma letra: ");
+		String c = new String();
 		Scanner sc5 = new Scanner (System.in);
-		String c = sc5.nextLine();
+		if(sc5.hasNext()) {
+			c = sc5.nextLine();
+		}
 		c = processaPalavra(c, 1);
-		sc5.nextLine();
 		sc5.close();
 		boolean end = tentativa(palSort, jogador, c);
 		return end;
@@ -229,18 +236,18 @@ public class Utils {
 	public static boolean tentFinalizacao(String pal) {
 		boolean fim = false;
 		Scanner sc6 = new Scanner(System.in);
-		Scanner sc7 = new Scanner(System.in);
 		System.out.println("Voce sabe qual e a palavra? [S/N]");
 		String resp = new String();
-		String r = sc6.nextLine();
-        r = processaPalavra(r, 1);
-        sc6.nextLine();
-        sc6.close();
-		if(r.equals("S")) {
+		if(sc6.hasNext()) {
+			resp = sc6.nextLine();
+		}
+        resp = processaPalavra(resp, 1);
+		if(resp.equals("S")) {
 			System.out.println("Qual e a palavra? ");
-			resp = sc7.nextLine();
-			sc7.nextLine();
-			sc7.close();
+			if(sc6.hasNext()) {
+				resp = sc6.nextLine();
+			}
+			sc6.close();
 			resp = resp.trim();
 			resp = resp.toUpperCase();
 			if(resp.equals(pal)) {
@@ -255,7 +262,7 @@ public class Utils {
 		else {
 			fim = false;
 		}
-		sc7.close();
+		sc6.close();
 		return fim;
 	}
 	

@@ -1,16 +1,9 @@
 package jogoAlex;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.RandomAccessFile;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -22,10 +15,9 @@ public class Biblio {
 	static Set<Palavra> s2 = new HashSet<Palavra>();
 	static ArrayList<Palavra> arrayFinal = new ArrayList<Palavra>();
 	 
-	
 	public static ArrayList <Palavra> retornaBiblioteca(){
 		ArrayList<Palavra> temp1 = new ArrayList<Palavra>();
-		temp1 = biblio1();
+		temp1 = biblio1(); //deverá receber o método de leitura de arquivo;
 		arrayFinal.addAll(temp1);
 		Set<Palavra> s = new HashSet<Palavra>();
 		Iterator<Palavra> it = arrayFinal.iterator();
@@ -44,29 +36,32 @@ public class Biblio {
 		Scanner sc2 = new Scanner(System.in);
 		boolean fim = false;
 		Palavra palavra = new Palavra(" ", " ");
-		String p1, p2;
-		String s = "S";
-		String n = "N";
+		String p1 = new String(); 
+		String p2 = new String();
+		String c = new String();
 		while(fim==false) {
 			System.out.println("Deseja inserir nova palavra? [S/N]");
-			String c = sc2.nextLine();
+			if(sc2.hasNext()) {
+				c = sc2.next();
+			}
 			c = Utils.processaPalavra(c, 1);
-			sc2.nextLine();
-			if(c.equals(n)) {
+			if(c.equals("N")) {
 				fim = true;
+				break;
 			}
 			else{
-				if(c.equals(s)) {
+				if(c.equals("S")) {
 					fim = false;
 					System.out.println("Insira a palavra: ");
-					Scanner sc3 = new Scanner(System.in);
-					p1 = sc3.nextLine();
+					if(sc2.hasNext()) {
+						p1 = sc2.next();
+					}						
 					p1 = Utils.processaPalavra(p1, 0);
-					sc3.nextLine();
 					System.out.println("Insira a palavra-chave: ");
-					p2 = sc3.nextLine();
+					if(sc2.hasNext()) {
+						p2 = sc2.next();	
+					}
 					p2 = Utils.processaPalavra(p2, 0);
-					sc3.nextLine();
 					boolean teste = comparaPalavra(p1);
 					if(teste == false) {
 						palavra = new Palavra(p1, p2);
@@ -75,7 +70,6 @@ public class Biblio {
 					else {
 						System.out.println("Palavra já existente no jogo! ");
 					}
-					sc3.close();
 				}				
 			}
 		}
@@ -107,7 +101,7 @@ public class Biblio {
 		while(it.hasNext()) {
 			a.add((Palavra) it.next());
 		}
-		arrayFinal = a;
+		arrayFinal.addAll(a);
 		return arrayFinal;
 	}
 
@@ -126,137 +120,10 @@ public class Biblio {
 	}
 
 	public static void main(String[] args) {
-		ArrayList<Palavra> c = arrayFinal;
+		ArrayList<Palavra> c = retornaBiblioteca();
 		for (int i = 0; i < c.size(); i++) {
 			System.out.println(c.get(i));
 		}
 	}
-	
-//SALVAR NUM ARQUIVO
-	//DIRETORIO: C:\Users\Alex\eclipse-workspace\jogoAlex
-	
-	public static void saveWord(){
 		
-		List<Palavra> array = retornaBiblioteca();
-		Iterator<Palavra> it = array.iterator();
-		Palavra p;
-		String wordFile, wordArray;
-		boolean teste  = false;
-		
-	    try {
-	    	FileReader arq = new FileReader("d:\\palavras.txt");
-	    	BufferedReader lerArq = new BufferedReader(arq);
-   
-	    	String linha = lerArq.readLine(); // lê a primeira linha
-	    	while (linha != null) {
-	    		System.out.printf("%s\n", linha);
-	    		while(it.hasNext()) {
-	    			p = it.next();
-	    			wordArray = p.toString();
-	    			wordFile = linha;
-	    			if(wordArray.equals(wordFile)) {
-	    				teste = true;
-	    				break;
-	    			}
-	    		}
-	    		linha = lerArq.readLine(); // lê da segunda até a última linha
-	    	}
-    
-	    	arq.close();
-       } catch (IOException e) {
-          System.out.printf("Erro na abertura do arquivo: %s.\n", e.getMessage());
-       }
-       System.out.println();
-    }
-	
-	public static ArrayList<String> lendoFile(){
-		ArrayList<String> array = new ArrayList<String>();
-		String str = new String();
-		Palavra p;
-		String[] line = new String();
-		
-		
-		try {
-	    	FileReader arq = new FileReader("d:\\palavras.txt");
-	    	BufferedReader lerArq = new BufferedReader(arq);
-   
-	    	String linha = lerArq.readLine(); // lê a primeira linha
-	    	while (linha != null) {
-	    		
-	    		System.out.printf("%s\n", linha);
-	    		str = linha;
-	    		str = str.trim();
-	    		str = str.toUpperCase();
-	    		if(str.endsWith("%n")) {
-	    			str = str.substring(0, str.length() - 2 );
-	    		}
-	    		str = str.
-	    		linha = lerArq.readLine(); // lê da segunda até a última linha
-	    	}
-    
-	    	arq.close();
-	    	return array;
-	    			
-       } catch (IOException e) {
-          System.out.printf("Erro na abertura do arquivo: %s.\n", e.getMessage());
-       }
-       
-	    System.out.println();
-       if(array.isEmpty() == false) {
-    	   return array;
-       }
-       else {
-    	   return null;
-       }
-	
-    }
-	
-	public static void salvandoNumArquivo() throws FileNotFoundException, IOException {
-		
-	      double nota1, nota2;
-	      long n;
-	      
-		  List<Palavra> array = retornaBiblioteca();
-		  Iterator<Palavra> it = array.iterator();
-		  Palavra p;
-		  String wordFile, wordArray;
-		  boolean teste  = false;
-	    
-	      RandomAccessFile archive = new RandomAccessFile("d:\\palavras.txt", "rw");
-	    
-	      archive.seek(archive.length()); // posiciona o ponteiro de posição no final do arquivo
-	      n = (archive.length() / 56) + 1; // número do novo registro
-	      while (true) {
-	        System.out.printf("%do. registro-------------------------------\n", n);
-	        System.out.printf("Informe o nome do aluno, FIM para encerrar:\n");
-	        nome = ler.nextLine();
-	        if (nome.equalsIgnoreCase("FIM"))
-	           break;
-	         
-	        System.out.printf("\nInforme a 1a. nota: ");
-	        nota1 = ler.nextDouble();
-	    
-	        System.out.printf("Informe a 2a. nota: ");
-	        nota2 = ler.nextDouble();
-	    
-	        ler.nextLine(); // esvazia o buffer do teclado
-	    
-	        gravarString(diario, nome, 20);
-	        diario.writeDouble(nota1);
-	        diario.writeDouble(nota2);
-	    
-	        n = n + 1;
-	    
-	        System.out.printf("\n");
-	      }
-	      diario.close();
-	    }
-	    
-	    private static void gravarString(RandomAccessFile arq, String s, int tam) throws IOException {
-	      StringBuilder result = new StringBuilder(s);
-	      result.setLength(tam);
-	      arq.writeChars(result.toString());
-	    }
-	
-
-	}
+}
